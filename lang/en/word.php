@@ -16,7 +16,8 @@ return[
     'users'=>'Users',
     'all'=>'All',
     'client'=>'Client',
-    'add'=>'Add'
+    'add'=>'Add',
+    'roles'=>'Roles'
 
 ];
 

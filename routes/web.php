@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Site\SiteController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\AdminController;
@@ -20,7 +21,7 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 Route::prefix(LaravelLocalization::setLocale())->group(function () {
 
     //admin routes
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('auth','check_user')->group(function () {
     Route::get('/',[AdminController::class,'index'])->name('index');
 
     //clients routes
@@ -71,9 +72,8 @@ Route::prefix(LaravelLocalization::setLocale())->group(function () {
     Route::delete('testimonials/{id}/forcedelete', [TestimonialController::class, 'forcedelete'])->name('testimonials.forcedelete');
     Route::resource('testimonials',TestimonialController::class);
 
-    //users routes
-    Route::get('users',[UserController::class,'index'])->name('users.index');
-    Route::delete('users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::resource('roles',RoleController::class);
+    Route::resource('users',UserController::class);
 
 
 });
@@ -83,7 +83,7 @@ Auth::routes();
 Route::view('not','not_allawd');
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
-//->middleware('auth','check_user')
+
 
 //site routes
 Route::get('/',[SiteController::class,'index'])->name('site.index');
